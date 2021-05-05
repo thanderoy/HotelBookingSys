@@ -35,7 +35,16 @@ def RoomListView(request):
 class BookingList(ListView):
     model = Booking 
 
+    def get_queryset(self, *args, **kwargs):
+        if self.request.user.is_staff:
+            booking_list = Booking.objects.all()
+            return booking_list
+        else:
+            booking_list = Booking.objects.filter(user=self.request.user)
+            return booking_list
+
 class RoomDetailView(View):
+
     def get(self, request, *args, **kwargs):
         category = self.kwargs.get('category', None)
         form = AvailabilityForm()
