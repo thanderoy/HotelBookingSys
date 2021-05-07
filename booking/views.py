@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
-from django.views.generic import ListView, FormView, View
-from django.urls import reverse
+from django.views.generic import ListView, FormView, View, DeleteView
+from django.urls import reverse, reverse_lazy
 from .models import *
 from .forms import *
 from booking.booking_func.availability import check_availability
@@ -32,7 +32,7 @@ def RoomListView(request):
     # print(room_list)
     return render(request, 'home.html', context)
 
-class BookingList(ListView):
+class BookingListView(ListView):
     model = Booking 
 
     def get_queryset(self, *args, **kwargs):
@@ -93,12 +93,19 @@ class RoomDetailView(View):
         else:
             return HttpResponse("Fukk! We're out of those rooms" )
         
-class BookingView(FormView):
-    form_class = AvailabilityForm
-    template_name = 'booking/availability.html'
+class CancelBookingView(DeleteView):
+    model = Booking
+    template_name = 'booking_cancel.html'
+    success_url = reverse_lazy('booking:BookingListView')
+
+
+
+# class BookingView(FormView):
+#     form_class = AvailabilityForm
+#     template_name = 'booking/availability.html'
     
 
-    def form_valid(self, form):
-        data = form.cleaned_data
-        room_list = Room.objects.filter(category=data['category'])
+#     def form_valid(self, form):
+#         data = form.cleaned_data
+#         room_list = Room.objects.filter(category=data['category'])
         

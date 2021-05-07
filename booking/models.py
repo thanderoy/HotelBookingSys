@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 # Create your models here.
 class Room(models.Model):
@@ -25,4 +26,13 @@ class Booking(models.Model):
 
     def __str__(self):
         return f'{self.user} has booked {self.room} from {self.check_in} to {self.check_out}'
+
+    def get_category(self):
+        categories = dict(self.room.ROOM_CATEGORIES)
+        category = categories.get(self.room.category)
+        return category
+
+    def cancel_booking(self):
+        return reverse('booking:CancelBookingView', args=[self.pk, ])
+
     
