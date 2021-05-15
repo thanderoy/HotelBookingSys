@@ -10,13 +10,15 @@ class Room(models.Model):
         ('EXS', 'EXECUTIVE SUITE'),
         ('SGB', 'SINGLE BED'),
     )
-    room_number = models.IntegerField()
+    room_number = models.IntegerField(null=True, blank=True)
     category = models.CharField(choices=ROOM_CATEGORIES, max_length=3)
-    beds = models.IntegerField()
-    capacity = models.IntegerField()
+    beds = models.IntegerField(null=True, blank=True)
+    capacity = models.IntegerField(null=True, blank=True)
+    price = models.FloatField(null=True, blank=True)
+    image_url = models.CharField(max_length=1000, null=True,blank=True)
 
     def __str__(self):
-        return f'{self.room_number}.{self.category} with {self.beds} bed(s) for {self.capacity} person(s)' 
+        return f'{self.room_number}.{self.category} with {self.beds} bed(s) for {self.capacity} person(s) @ KSH. {self.price}' 
     
 class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

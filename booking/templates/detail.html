@@ -20,8 +20,7 @@
 
         <!-- Room Image -->
         <div class="image">
-            <img
-                src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                <img src="{{ booking.image_url }}" alt="Room Image">
         </div>
 
         <!-- Room Details -->
@@ -63,6 +62,8 @@
                 <div class="input-div">
                     <button type="submit">Book the Room</button>
                 </div>
+
+                <div class="cancel"><a href="{{booking.cancel_booking}}" class="invisible"><i class="far fa-2x fa-times-circle"> Cancel Booking</i></a></div>
 
             </form>
 
