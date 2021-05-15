@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,35 +6,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotelina</title>
+    <title> {% block title %} Hotelio {% endblock title %}</title>
     <!-- Main StyleSheet -->
     <link rel="stylesheet" href="{% static 'booking/css/index.css' %}">
 </head>
 
 <body>
-    <!-- Brand -->
-    <h1 id="brand">Hotelina</h1>
+    {% block content %}
+      
+    <!-- Navbar is loaded from base.html here -->
+
+    <section class="jumbotron text-center p-5">
+        <div class="container">
+          <h1 class="jumbotron-heading">Hotelio</h1>
+          <p class="lead text-muted">Welcome to Hotelio Room Booking System. Find the rooms we offer below and click one to learn more or book a room.</p>
+        </div>
+      </section>
+    
 
     <!-- Main Content -->
-    <div class="content">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
 
-        {% for category, room_url in room_list %}
+        {% for category, details in room_list %}
        
-        <div class="room">
-            <a href="{{ room_url }}">
-                <img
-                    src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
-
-                <h2>{{ category }}</h2>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi</p>
+        <div class="col">
+            <a href="{{ category.1 }}">
+                <div class="card text-dark bg-light mb-3 h-100">
+                    <img src="{{ details.image_url }}" class="card-img-top" alt="Room Image" style="height: 250px;">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ category.0 }}</h3>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
             </a>
         </div>
 
         {% endfor %}
 
-        
-
     </div>
+
+    {% endblock content %}
+
 </body>
 
 </html> 
