@@ -27,7 +27,7 @@ def get_room_list():
 
     data_list = list(zip(room_cat_list, room_details_list))
     
-    print(data_list)
+    # print(data_list)
     
     return data_list
     

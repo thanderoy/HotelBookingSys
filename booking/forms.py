@@ -12,3 +12,8 @@ class AvailabilityForm(forms.Form):
     # category = forms.ChoiceField( choices=ROOM_CATEGORIES, required=True)
     check_in = forms.DateTimeField(input_formats=['%Y-%m-%dT%H:%M'], required=True)
     check_out = forms.DateTimeField(input_formats=['%Y-%m-%dT%H:%M'], required=True)
+
+
+class PhoneNoForm(forms.Form):
+
+    phone_no = forms.CharField(required=True)
