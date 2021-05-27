@@ -1,4 +1,6 @@
 {% load static %}
+{% load account %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +11,11 @@
     
     <link rel="stylesheet" href="{% static 'booking/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'booking/css/bootstrap-grid.min.css' %}">
+
+
     <script src="{% static 'booking/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'booking/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://kit.fontawesome.com/692189991f.js" crossorigin="anonymous"></script>
 </head>
 <body>
     
@@ -18,15 +23,23 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <div class="container"><a class="navbar-brand me-lg-auto" href="#">Hotelio</a></div>
+            <div class="container"><a class="navbar-brand me-lg-auto" href="{% url 'booking:RoomListView' %}">Hotelio</a></div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Bookings</a>
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'booking:RoomListView' %}">Home</a>
+                    <a class="nav-link" href="{% url 'booking:BookingListView' %}">Bookings</a>
+
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="/accounts/logout">Logout</a>
+                        <p class="nav-link"><small class="text-muted">{% user_display user %}</small></p>
+
+                    {% else %}
+                        <a class="nav-link" href="/accounts/login">Login</a>
+                  
+                    {% endif %}
                     
                 </div>
              </div>
