@@ -8,8 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {% block title %} Hotelio {% endblock title %}</title>
-    <!-- Main StyleSheet -->
-    <link rel="stylesheet" href="{% static 'booking/css/index.css' %}">
 </head>
 
 <body>
@@ -22,30 +20,30 @@
           <h1 class="jumbotron-heading">Hotelio</h1>
           <p class="lead text-muted">Welcome to Hotelio Room Booking System. Find the rooms we offer below and click one to learn more or book a room.</p>
         </div>
-      </section>
+    </section>
     
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
 
-    <!-- Main Content -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
-
-        {% for category, details in room_list %}
-       
-        <div class="col">
-            <a href="{{ category.1 }}">
-                <div class="card text-dark bg-light mb-3 h-100">
-                    <img src="{{ details.image_url }}" class="card-img-top" alt="Room Image" style="height: 250px;">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ category.0 }}</h3>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            {% for category, details in room_list %}
+        
+            <div class="col">
+                <a href="{{ category.1 }}" class="text-decoration-none">
+                    <div class="card text-dark bg-light mb-3 h-100">
+                        <img src="{{ details.image_url }}" class="card-img-top" alt="Room Image" style="height: 250px;" loading="lazy">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ category.0 }}</h3>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
+
+            {% endfor %}
+
         </div>
-
-        {% endfor %}
-
     </div>
-
+    
     {% endblock content %}
 
 </body>

@@ -8,10 +8,8 @@ urlpatterns = [
     path('booking_list/', BookingListView.as_view(), name='BookingListView'),
     path('room/<category>/', RoomDetailView.as_view(), name='RoomDetailView'),
     path('booking/cancel/<pk>', CancelBookingView.as_view(), name='CancelBookingView'),
-    path('room/<category>/checkout/', CheckoutView.as_view(), name='CheckoutView'),
-    path('complete_payment/', PaymentCompleteView, name='PaymentCompleteView'),
+    path('checkout/<category>/', CheckoutView, name='CheckoutView'),
 
-    path('mpesa_checkout/', MpesaCheckoutView, name='MpesaCheckoutView'),
     path('daraja/stk-push', stk_push_callback, name='mpesa_stk_push_callback'),
 
 ]

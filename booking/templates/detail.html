@@ -1,76 +1,71 @@
+{% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Detail</title>
-    <script src="https://kit.fontawesome.com/692189991f.js" crossorigin="anonymous"></script>
-
-    <!-- Main StyleSheet -->
-    <link rel="stylesheet" href="{% static 'booking/css/detail.css' %}">
+    <title> {% block title %} Room Detail {% endblock title %}</title>
 
 </head>
 
 <body>
+    {% block content %}
 
-    <!-- Main Content -->
+    <!-- Navbar is loaded from base.html here -->
+
     <div class="content">
 
-        <!-- Room Image -->
-        <div class="image">
-                <img src="{{ booking.image_url }}" alt="Room Image">
-        </div>
-
-        <!-- Room Details -->
         <div class="room">
 
-            <!-- Div 1: Back to Home -->
             <div class="home">
-                <a href="{% url 'booking:RoomListView' %}"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
+                <a href="{% url 'booking:RoomListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
             </div>
 
-            <!-- Div 2: Room Information -->
-            <div class="room-info">
-                <h1>{{category}}</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id optio rem saepe culpa architecto tempora
-                    numquam debitis reiciendis! Quaerat laudantium consequuntur doloribus quod placeat consectetur
-                    veniam,
-                    rerum repellendus magnam labore. </p>
-            </div>
-
-            <!-- Div 3: Room Booking Form -->
-            <form id="booking-form" action="" method="POST">
-
-                {% csrf_token %}
-
-                <!-- Input Div -->
-                <div class="input-div">
-                    <label for="id_check_in">Check In : </label>
-                    <input type="datetime-local" id="id_check_in" name="check_in">
-                </div>
-
-                <!-- Input Div -->
-                <div class="input-div">
-                    <label for="id_check_out">Check Out : </label>
-                    <input type="datetime-local" id="id_check_out" name="check_out">
-                </div>
+            <div class="container col-xxl-8 px-4 py-5">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                    <div class="col-lg-6">
+                        <h1 class="display-5 fw-bold lh-1 mb-3">{{ category }}</h1>
+                        <p class="lead">Beds: {{ room_details.beds }}</p>
+                        <p class="lead">Person capacity: {{ room_details.capacity }}</p>
+                        <p class="lead">Room Price: Ksh. {{ room_details.price }}</p>
+                        <hr>
+                        <br>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <form id="booking-form" action="" method="POST">
+                                {% csrf_token %}
                 
-
-                <!-- Input Div -->
-                <div class="input-div">
-                    <button type="submit">Book the Room</button>
+                                {% for field in form %}
+                                    <div class="mb-3 fieldWrapper">
+                                        <span class="form-text">{{ field.errors }}</span>
+                                        <label class="form-label">{{ field.label_tag }}</label> {{ field }}
+                                        {% if field.help_text %}
+                                        <p class="help form-text">{{ field.help_text|safe }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                
+                                <div class="input-div">
+                                    <button type="submit" class="btn btn-primary">Book the Room</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-10 col-sm-8 col-lg-6">
+                        <img src="{{ room_details.image_url }}" class="d-block mx-lg-auto img-fluid" alt="Room Image" width="700" height="600" loading="lazy">
+                    </div>
+                  
                 </div>
-                <div class="input-div">
-                    <a href="/category"><button type="submit">Book the Room</button></a>
-                </div>
+              </div>
 
-            </form>
 
-        </div> <!-- END Room Div -->
+        </div> 
 
-    </div> <!-- END Main Content Div -->
+    </div> 
+
+    {% endblock content %}
 
 </body>
 

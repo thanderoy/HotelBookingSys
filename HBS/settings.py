@@ -149,12 +149,18 @@ STATIC_ROOT = 'static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+# Django-allauth configurations
+ACCOUNT_LOGOUT_REDIRECT_URL = '/room_list'
+LOGIN_REDIRECT_URL = '/room_list/'
+
+
 # The Mpesa environment to use
 # Possible values: sandbox, production
 MPESA_ENVIRONMENT='sandbox'
 # Credentials for the daraja app
-MPESA_CONSUMER_KEY= 'U6SttfqW5MkupNxPKB8qpZlZG03RMHlk'
-MPESA_CONSUMER_SECRET= '6FdPIOSa2XR19XvD'
+MPESA_CONSUMER_KEY= 'ZRyrw2GAi6oJB7kuGuhBD019V3E1rWAt'
+MPESA_CONSUMER_SECRET= 'hYzgu6C4PjECRdrR'
 # Shortcode to use for transactions. For sandbox use the Shortcode 1
 # provided on test credentials page
 # MPESA_SHORTCODE= '603021'
