@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block head_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'booking/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'booking/css/bootstrap-grid.min.css' %}">
+    <script src="{% static 'booking/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'booking/js/bootstrap.bundle.min.js' %}"></script>
+
+
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+    {% block navbar %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="container"><a class="navbar-brand me-lg-auto" href="{% url 'booking:RoomListView' %}">Hotelio</a></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="{% url 'booking:RoomListView' %}">Home</a>
+                    <a class="nav-link" href="/accounts/login">Login</a>
+                    <a class="nav-link" href="/accounts/signup">Signup</a>
+                    
+                </div>
+             </div>
+        </div>
+      </nav>
+
+    {% endblock navbar %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+  </body>
+</html>

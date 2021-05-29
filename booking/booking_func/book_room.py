@@ -1,4 +1,4 @@
-from booking.models import Booking, Room
+from booking.models import Booking
 
 def book_room(request, room, check_in, check_out):
     booking = Booking.objects.create(
