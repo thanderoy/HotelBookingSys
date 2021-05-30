@@ -4,8 +4,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from datetime import datetime
 import json
+
 
 import requests
 from .models import *
@@ -54,9 +57,17 @@ class RoomDetailView(View):
 
         got_category = get_room_category(category)
 
+        print('')
         print('Room requested by User: ' + got_category)
+        print('')
 
         room_detail = get_room_details(category)
+
+        global room_detail_val
+        def room_detail_val():
+            return room_detail
+
+        
         
         form = AvailabilityForm()
 
@@ -86,17 +97,35 @@ class RoomDetailView(View):
         
             available_rooms = get_available_rooms(category, data['check_in'], data['check_out'] )
 
-            room = available_rooms[0]
+            check_in = data['check_in']
+            check_out = data['check_out']
 
+            global in_val
+            def in_val():
+                return check_in
 
-            request.session['room'] = room
-            request.session['check_in'] = data['check_in']
-            request.session['check_out'] = data['check_out']
+            global out_val
+            def out_val():
+                return check_out
+
+            print('')
+            print('In: ', check_in, '   Out: ', check_out)
+            print('')
 
             if available_rooms is not None:
 
                 room = available_rooms[0]
+
+                global room_val
+                def room_val():
+                    return room
+
+                global user_val
+                def user_val():
+                    return request.user
+
                 print('Room available. Redirecting to payment...')
+                print('')
 
                 context = {
                     'room':room,
@@ -124,6 +153,7 @@ class CancelBookingView(DeleteView):
     template_name = 'booking_cancel.html'
     success_url = reverse_lazy('booking:BookingListView')
 
+@login_required
 def CheckoutView(request, category):
     # template_name = 'booking/checkout.html'
     if request.method == 'POST':
@@ -138,10 +168,10 @@ def CheckoutView(request, category):
         phone_number = phone_no
         # amount = price
         amount = 1
-        account_reference = 'reference'
+        account_reference = 'Hotelio Room Booking'
         transaction_desc = 'Description' 
         # callback_url = request.build_absolute_uri(reverse('booking:mpesa_stk_push_callback'))
-        callback_url = 'https://dcad15fecaaa.ngrok.io/daraja/stk-push'
+        callback_url = 'https://590cf28f82d8.ngrok.io/daraja/stk-push'
         # callback_url = 'https://end9m3so3m5u9.x.pipedream.net/'
         # callback_url = 'https://4576b4f15e41.ngrok.io'
         
@@ -151,14 +181,23 @@ def CheckoutView(request, category):
         print('Processing payment...')
 
         str_response = response.json()
+
         response_code = str_response['ResponseCode']
         mpesa_response = str_response['ResponseDescription']
         customer_response = str_response['CustomerMessage']
 
+        # if str_response is not None:
+        #     response_code = str_response['ResponseCode']
+        #     mpesa_response = str_response['ResponseDescription']
+        #     customer_response = str_response['CustomerMessage']
+        # else:
+        #     print(str_response)
+        #     HttpResponse('Error in Payment Processing')
+
         print('')
         print('ResponseCode: ', response_code)
-        print(mpesa_response)
-        print(customer_response)
+        print('MPESA Response: ', mpesa_response)
+        print('Customer Response: ', customer_response)
         print('')
 
         
@@ -185,19 +224,29 @@ def CheckoutView(request, category):
 def stk_push_callback(request):
 
     data = request.body
-    body = json.loads(data)
-    result_code = body['Body']['stkCallback']['ResultCode']
-    result_desc = body['Body']['stkCallback']['ResultDesc']
+    got_data = json.loads(data)
+    result_code = got_data['Body']['stkCallback']['ResultCode']
+    result_desc = got_data['Body']['stkCallback']['ResultDesc']
 
     print(' ')
     print('ResultCode: ', result_code)
     print(result_desc)
     print(' ')
 
-    
+    room = room_val()
+    check_in = in_val()
+    check_out = out_val()
+    user = user_val()
 
+    if result_code == 0:
+        booking = book_room(user, room, check_in, check_out)
+        print (booking)
+        
+        return render(request, 'booking/paymentcomplete.html')
 
-    return HttpResponse(data)
+    else:
+        return render(request, 'booking/paymenterror.html')
+
 
     
 
