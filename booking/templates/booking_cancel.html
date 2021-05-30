@@ -1,66 +1,62 @@
+{% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Detail</title>
-    <script src="https://kit.fontawesome.com/692189991f.js" crossorigin="anonymous"></script>
-
-    <!-- Main StyleSheet -->
-    <link rel="stylesheet" href="{% static 'booking/css/detail.css' %}">
-
+    <title> {% block title %} Cancel Booking {% endblock title %}</title>
 </head>
 
 <body>
+    {% block content %}
+      
+    <!-- Navbar is loaded from base.html here -->
 
-    <!-- Main Content -->
     <div class="content">
 
-        <!-- Room Image -->
-        <div class="image">
-            <img
-                src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
-        </div>
-
-        <!-- Room Details -->
         <div class="room">
 
-            <!-- Div 1: Back to Home -->
             <div class="home">
-                <a href="{% url 'booking:RoomListView' %}"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
+                <a href="{% url 'booking:RoomListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
             </div>
 
-            <!-- Div 2: Room Information -->
-            <div class="room-info">
-                <h1>{{category}}</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id optio rem saepe culpa architecto tempora
-                    numquam debitis reiciendis! Quaerat laudantium consequuntur doloribus quod placeat consectetur
-                    veniam,
-                    rerum repellendus magnam labore. </p>
-            </div>
+            <div class="container col-xxl-8 px-4 py-5">
+                <div class="row align-items-center g-5 py-5">
+                    <div class="col-10 col-sm-8 col-lg-6">
+                        <img src="{{ booking.room.image_url }}" class="d-block mx-lg-auto img-fluid" alt="Room Image" width="700" height="600" loading="lazy">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="room-info">
+                            <h1>Confirm cancel booking:</h1>
+                        </div>
 
-            <!-- Div 3: Room Booking Form -->
-            <form id="booking-form" action="" method="POST">
+                        <form id="booking-form" action="" method="POST">
 
-                {% csrf_token %}                
-                <h2>Confirm cancellation</h2>
-                <h4>Cancel booking: </h4>
-                <p> {{booking.get_category}} {{booking.room}}</p>
-                <p> By: {{booking.user}}</p>
-                <p> From: {{booking.check_in}}</p>
-                <p> To: {{booking.check_out}}</p>
-                <!-- Input Div -->
-                <div class="input-div">
-                    <button type="submit">Cancel Booking</button>
+                            {% csrf_token %} 
+
+                            <h4 class="text-muted">{{ booking.get_category }}</h4>
+                            <hr>
+                            <p> {{booking.get_category}} {{booking.room.room_number}}</p>
+                            <p class="card-text"> Booked by: {{booking.user}}</p>
+                            <p class="card-text"> From: {{booking.check_in}}</p>
+                            <p class="card-text"> To: {{booking.check_out}}</p>
+                            
+                            <div class="input-div">
+                                <button class="btn btn-danger" type="submit">Cancel Booking</button>
+                            </div>
+            
+                        </form>
+
+                    </div>
                 </div>
-
-            </form>
-
-        </div> <!-- END Room Div -->
-
-    </div> <!-- END Main Content Div -->
+            </div>
+        </div> 
+    </div>
+    
+    {% endblock content %}
 
 </body>
 

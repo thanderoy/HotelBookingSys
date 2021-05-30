@@ -1,12 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pay Done</title>
+    <title> {% block title %} Hotelio|Payment Complete {% endblock title %}</title>
+
 </head>
+
 <body>
+    {% block content %}
+
+    <!-- Navbar is loaded from base.html here -->
+    
+    <h1>Payment hass been approved. Click below to view your bookings</h1>
+    <div class="home">
+        <a href="{% url 'booking:BookingListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Your Bookings</i></a>
+    </div>
+
+    {% endblock content %}
     
 </body>
 </html>
