@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from datetime import datetime
 import json
-
+import time
 
 import requests
 from .models import *
@@ -171,7 +171,7 @@ def CheckoutView(request, category):
         account_reference = 'Hotelio Room Booking'
         transaction_desc = 'Description' 
         # callback_url = request.build_absolute_uri(reverse('booking:mpesa_stk_push_callback'))
-        callback_url = 'https://590cf28f82d8.ngrok.io/daraja/stk-push'
+        callback_url = 'https://0a45f721848b.ngrok.io/daraja/stk-push'
         # callback_url = 'https://end9m3so3m5u9.x.pipedream.net/'
         # callback_url = 'https://4576b4f15e41.ngrok.io'
         
@@ -201,8 +201,9 @@ def CheckoutView(request, category):
         print('')
 
         
-        return HttpResponse('Processing payment...')
-        # return redirect('booking:mpesa_stk_push_callback')
+        # return HttpResponse('Processing payment...')
+        time.sleep(10)
+        return redirect('booking:mpesa_stk_push_callback')
 
     else:
         form = PhoneNoForm()
@@ -219,33 +220,57 @@ def CheckoutView(request, category):
 
         return render(request, 'booking/checkout.html', context)
         
+# def PayCompleteView(request):
+
+#     return render(request, 'booking/paymentcomplete.html')
+
+# def PayErrorView(request):
     
+#     return render(request, 'booking/paymenterror.html')
+
 @csrf_exempt
 def stk_push_callback(request):
 
-    data = request.body
-    got_data = json.loads(data)
-    result_code = got_data['Body']['stkCallback']['ResultCode']
-    result_desc = got_data['Body']['stkCallback']['ResultDesc']
+    try:
+        data = request.body
+        print(data)
 
-    print(' ')
-    print('ResultCode: ', result_code)
-    print(result_desc)
-    print(' ')
+        got_data = json.loads(data.decode("utf-8"))
 
-    room = room_val()
-    check_in = in_val()
-    check_out = out_val()
-    user = user_val()
+        result_code = got_data['Body']['stkCallback']['ResultCode']
+        result_desc = got_data['Body']['stkCallback']['ResultDesc']
 
+        global result_code_val
+        def result_code_val():
+            return result_code
+
+        print(' ')
+        print('ResultCode: ', result_code)
+        print(result_desc)
+        print(' ')
+
+    except Exception:
+        pass
+    
+    result_code = result_code_val()
+    
     if result_code == 0:
+        room = room_val()
+        check_in = in_val()
+        check_out = out_val()
+        user = user_val()
+
         booking = book_room(user, room, check_in, check_out)
         print (booking)
         
-        return render(request, 'booking/paymentcomplete.html')
+        return HttpResponse('Rooom booked')
+        # return redirect('booking:PayCompleteView')
 
     else:
-        return render(request, 'booking/paymenterror.html')
+        print('Room not booked')
+        return HttpResponse('Error in payment')
+        # return redirect('booking:PayErrorView')
+        # return render(request, 'booking/paymenterror.html')
 
 
     
