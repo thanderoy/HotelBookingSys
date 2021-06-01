@@ -25,7 +25,7 @@ SECRET_KEY = 'm8%v#1-6e46u02^)!_2%(bqh&_s#=v1&9e#dwoir$p)u$n%cw-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['590cf28f82d8.ngrok.io']
+ALLOWED_HOSTS = ['0a45f721848b.ngrok.io', '127.0.0.1']
 
 
 # Application definition
@@ -151,8 +151,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Django-allauth configurations
-ACCOUNT_LOGOUT_REDIRECT_URL = '/room_list'
-LOGIN_REDIRECT_URL = '/room_list/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 
 
 # The Mpesa environment to use
