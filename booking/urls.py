@@ -12,11 +12,6 @@ urlpatterns = [
     path('room/<category>/', RoomDetailView.as_view(), name='RoomDetailView'),
     path('booking/cancel/<pk>', CancelBookingView.as_view(), name='CancelBookingView'),
     path('checkout/<category>/', CheckoutView, name='CheckoutView'),
-    # path('checkout/payment_complete/', PayCompleteView, name='PayCompleteView'),
-    # path('checkout/payment_error/', PayErrorView, name='PayErrorView'),
-
-
-    
 
 ]
 

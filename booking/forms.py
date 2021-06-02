@@ -10,14 +10,6 @@ class DateTimeInput(forms.DateTimeInput):
 
 class AvailabilityForm(forms.Form):
 
-    # ROOM_CATEGORIES = (
-    #     ('BZS', 'BUSINESS SUITE'),
-    #     ('TNS', 'TWIN SUITE'),
-    #     ('EXS', 'EXECUTIVE SUITE'),
-    #     ('SGB', 'SINGLE BED'),
-    # )
-
-    # category = forms.ChoiceField( choices=ROOM_CATEGORIES, required=True)
     check_in = forms.DateTimeField(input_formats=['%m/%d/%Y %H:%M'], widget=DateTimeInput)
     check_out = forms.DateTimeField(input_formats=['%m/%d/%Y %H:%M'], widget=DateTimeInput)
 
@@ -25,3 +17,4 @@ class AvailabilityForm(forms.Form):
 class PhoneNoForm(forms.Form):
 
     phone_no = forms.IntegerField()
+    

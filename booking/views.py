@@ -171,10 +171,7 @@ def CheckoutView(request, category):
         account_reference = 'Hotelio Room Booking'
         transaction_desc = 'Description' 
         # callback_url = request.build_absolute_uri(reverse('booking:mpesa_stk_push_callback'))
-        callback_url = 'https://0a45f721848b.ngrok.io/daraja/stk-push'
-        # callback_url = 'https://end9m3so3m5u9.x.pipedream.net/'
-        # callback_url = 'https://4576b4f15e41.ngrok.io'
-        
+        callback_url = 'https://a5245d5bf84e.ngrok.io/daraja/stk-push'
         response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
 
         print(' ')
@@ -186,23 +183,14 @@ def CheckoutView(request, category):
         mpesa_response = str_response['ResponseDescription']
         customer_response = str_response['CustomerMessage']
 
-        # if str_response is not None:
-        #     response_code = str_response['ResponseCode']
-        #     mpesa_response = str_response['ResponseDescription']
-        #     customer_response = str_response['CustomerMessage']
-        # else:
-        #     print(str_response)
-        #     HttpResponse('Error in Payment Processing')
-
         print('')
         print('ResponseCode: ', response_code)
         print('MPESA Response: ', mpesa_response)
         print('Customer Response: ', customer_response)
         print('')
 
-        
+        time.sleep(15)        
         # return HttpResponse('Processing payment...')
-        time.sleep(10)
         return redirect('booking:mpesa_stk_push_callback')
 
     else:
@@ -220,13 +208,6 @@ def CheckoutView(request, category):
 
         return render(request, 'booking/checkout.html', context)
         
-# def PayCompleteView(request):
-
-#     return render(request, 'booking/paymentcomplete.html')
-
-# def PayErrorView(request):
-    
-#     return render(request, 'booking/paymenterror.html')
 
 @csrf_exempt
 def stk_push_callback(request):
