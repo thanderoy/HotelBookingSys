@@ -11,5 +11,3 @@ def get_room_details(category):
     room_detail = category_list[0]
 
     return room_detail
-        
-
