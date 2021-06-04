@@ -12,6 +12,7 @@ urlpatterns = [
     path('room/<category>/', RoomDetailView.as_view(), name='RoomDetailView'),
     path('booking/cancel/<pk>', CancelBookingView.as_view(), name='CancelBookingView'),
     path('checkout/<category>/', CheckoutView, name='CheckoutView'),
+    path('pdf_download/', ReceiptDownloadView.as_view(), name='ReceiptDownloadView'),
 
 ]
 

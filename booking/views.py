@@ -5,10 +5,13 @@ from django.views.generic import ListView, View, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.template.loader import get_template
 from datetime import datetime
 import json
 import time
+
+from io import BytesIO
+from xhtml2pdf import pisa
 
 import requests
 from .models import *
@@ -67,6 +70,9 @@ class RoomDetailView(View):
         def room_detail_val():
             return room_detail
 
+        global category_val
+        def category_val():
+            return got_category
         
         
         form = AvailabilityForm()
@@ -171,7 +177,7 @@ def CheckoutView(request, category):
         account_reference = 'Hotelio Room Booking'
         transaction_desc = 'Description' 
         # callback_url = request.build_absolute_uri(reverse('booking:mpesa_stk_push_callback'))
-        callback_url = 'https://a5245d5bf84e.ngrok.io/daraja/stk-push'
+        callback_url = 'https://efc89ca122a4.ngrok.io/daraja/stk-push'
         response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
 
         print(' ')
@@ -233,8 +239,11 @@ def stk_push_callback(request):
     except Exception:
         pass
     
-    result_code = result_code_val()
-    
+    try:
+        result_code = result_code_val()
+    except Exception:
+        pass
+
     if result_code == 0:
         room = room_val()
         check_in = in_val()
@@ -244,17 +253,56 @@ def stk_push_callback(request):
         booking = book_room(user, room, check_in, check_out)
         print (booking)
         
-        return HttpResponse('Rooom booked')
+        # return HttpResponse('Rooom booked')
         # return redirect('booking:PayCompleteView')
+        return render(request, 'booking/paymentcomplete.html')
+
 
     else:
         print('Room not booked')
-        return HttpResponse('Error in payment')
+        # return HttpResponse('Error in payment')
         # return redirect('booking:PayErrorView')
-        # return render(request, 'booking/paymenterror.html')
+        return render(request, 'booking/paymenterror.html')
 
 
-    
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
+
+class ReceiptDownloadView(View):
+    def get(self, request, *args, **kwargs):
+
+        room_detail = room_detail_val()
+        category = category_val()
+        user = user_val()
+
+        data = {
+            'company': "Hotelio Room Booking",
+            'motto': "Come rest",
+
+            'email': "hotelio@hbs.com",
+            'phone': "0700 100 000",
+            'room': room_detail,
+            'user': user,
+            'category': category,
+        }
+
+        pdf = render_to_pdf('booking/receipt_template.html', data)
+
+        response = HttpResponse(pdf, content_type = 'application/pdf')
+        filename = 'Receipt_%s.pdf' %('12341231')
+        content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+
+
 
 # HTTP Listener for MPESA results on Callback URL
 from flask import Flask,jsonify, make_response, request 

@@ -15,11 +15,15 @@
     {% block content %}
 
     <!-- Navbar is loaded from base.html here -->
-
-    <h1>An error occured during payment processing</h1>
-    <div class="home">
-        <a href="{% url 'booking:RoomListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
+    <div class="container">
+        <div class="col text-center">
+            <h1>An error occured during payment processing</h1>
+            <div class="home">
+                <a href="{% url 'booking:RoomListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Home</i></a>
+            </div>
+        </div>
     </div>
+
 
     {% endblock content %}
     
