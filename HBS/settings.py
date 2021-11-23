@@ -25,7 +25,7 @@ SECRET_KEY = 'm8%v#1-6e46u02^)!_2%(bqh&_s#=v1&9e#dwoir$p)u$n%cw-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['a5245d5bf84e.ngrok.io', '127.0.0.1']
+ALLOWED_HOSTS = ['efc89ca122a4.ngrok.io', '127.0.0.1']
 
 
 # Application definition
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 
     # django_daraja
     'django_daraja',
-    
+
 ]
 
 MIDDLEWARE = [

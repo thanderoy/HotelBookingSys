@@ -15,11 +15,18 @@
     {% block content %}
 
     <!-- Navbar is loaded from base.html here -->
-    
-    <h1>Payment hass been approved. Click below to view your bookings</h1>
-    <div class="home">
-        <a href="{% url 'booking:BookingListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Your Bookings</i></a>
+    <div class="container">
+        <div class="col text-center">
+            <h1>Payment has been approved. Click below to view your bookings</h1>
+            <div class="home">
+                <a href="{% url 'booking:BookingListView' %}" class="text-decoration-none"><i class="fas fa-arrow-alt-circle-left">Your Bookings</i></a>
+            </div>
+            <div>
+                <a class="btn btn-info"  href="{% url 'booking:ReceiptDownloadView' %}">Download Receipt</a>
+            </div>
+        </div>
     </div>
+    
 
     {% endblock content %}
     
